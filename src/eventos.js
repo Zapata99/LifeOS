@@ -1,3 +1,5 @@
+import { eventoValido, fechaValida, leerLista, tareaValida, textoValido } from "./validacion.js";
+
 // Atajo para localizar elementos por selector en el documento de la agenda.
 const $ = (selector) => document.querySelector(selector);
 // Referencias a las zonas que se actualizan al mostrar el calendario y su formulario.
@@ -10,8 +12,8 @@ const campoFecha = $("#fecha_evento");
 const estado = $("#estado_eventos");
 
 // Claves compartidas con las páginas de eventos y tareas para usar el mismo almacenamiento.
-const CLAVE_EVENTOS = "eventos_guardados";
-const CLAVE_TAREAS = "tareas_guardadas";
+const claveEventos = "eventos_guardados";
+const claveTareas = "tareas_guardadas";
 // El calendario comienza en el mes actual y selecciona la fecha de hoy.
 const hoy = new Date();
 let mes = new Date(hoy.getFullYear(), hoy.getMonth(), 1);
@@ -26,12 +28,6 @@ function fechaISO(fecha) {
   const mes = String(fecha.getMonth() + 1).padStart(2, "0");
   const dia = String(fecha.getDate()).padStart(2, "0");
   return `${anio}-${mes}-${dia}`;
-}
-
-// Recupera una lista serializada. Si nunca se guardó esa clave, comienza con una lista vacía.
-function leerLista(clave) {
-  const texto = localStorage.getItem(clave);
-  return texto === null ? [] : JSON.parse(texto);
 }
 
 // Crea el elemento de lista que representa un único evento o tarea dentro de una celda.
@@ -123,6 +119,12 @@ formulario.addEventListener("submit", (envio) => {
   const nombre = campoNombre.value.trim();
   const fecha = campoFecha.value;
 
+  // No guarda el evento si falta texto o la fecha no representa un día real.
+  if (!textoValido(nombre) || !fechaValida(fecha)) {
+    estado.textContent = "Introduce un nombre y una fecha válidos.";
+    return;
+  }
+
   // Crea una nueva lista en lugar de modificar la existente y asigna un identificador.
   const nuevosEventos = [...eventos, {
     identificador: `${Date.now()}-${Math.random()}`,
@@ -131,7 +133,7 @@ formulario.addEventListener("submit", (envio) => {
   }];
 
   // Persiste primero la lista y luego actualiza el estado y la interfaz.
-  localStorage.setItem(CLAVE_EVENTOS, JSON.stringify(nuevosEventos));
+  localStorage.setItem(claveEventos, JSON.stringify(nuevosEventos));
   eventos = nuevosEventos;
   fechaSeleccionada = fecha;
   // Sitúa el calendario en el mes del evento, usando el primer día como referencia.
@@ -159,17 +161,17 @@ $("#mes_siguiente").addEventListener("click", () => {
 // El evento storage se dispara en esta pestaña cuando otra pestaña cambia una clave.
 window.addEventListener("storage", (cambio) => {
   // Ignora los cambios de otras claves que no afectan al contenido del calendario.
-  if (![CLAVE_EVENTOS, CLAVE_TAREAS].includes(cambio.key)) return;
+  if (![claveEventos, claveTareas].includes(cambio.key)) return;
 
   // Vuelve a leer las dos listas compartidas y representa los datos actualizados.
-  eventos = leerLista(CLAVE_EVENTOS);
-  tareas = leerLista(CLAVE_TAREAS);
+  eventos = leerLista(claveEventos, eventoValido);
+  tareas = leerLista(claveTareas, tareaValida);
   mostrarCalendario();
 });
 
 // Carga los datos existentes al iniciar la página.
-eventos = leerLista(CLAVE_EVENTOS);
-tareas = leerLista(CLAVE_TAREAS);
+eventos = leerLista(claveEventos, eventoValido);
+tareas = leerLista(claveTareas, tareaValida);
 
 // Propone hoy en el formulario y dibuja por primera vez el mes actual.
 campoFecha.value = fechaSeleccionada;

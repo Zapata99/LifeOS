@@ -5,6 +5,7 @@ import { guardarConfiguracion } from "./configuracion.js";
 const formularioConfiguracion = document.querySelector("#formulario_configuracion");
 const campoNombreAplicacion = document.querySelector("#nombre_aplicacion");
 const campoNombreUsuario = document.querySelector("#nombre_usuario");
+const estado = document.querySelector("#estado_configuracion");
 
 // Intercepta el envío para guardar los datos en el navegador antes de abandonar la página.
 formularioConfiguracion.addEventListener("submit", (evento) => {
@@ -14,6 +15,11 @@ formularioConfiguracion.addEventListener("submit", (evento) => {
   // Quita espacios de los extremos para evitar almacenarlos como parte de los nombres.
   const nombreAplicacion = campoNombreAplicacion.value.trim();
   const nombreUsuario = campoNombreUsuario.value.trim();
+
+  if (!nombreAplicacion || nombreAplicacion.length > 50 || !nombreUsuario || nombreUsuario.length > 50) {
+    estado.textContent = "Los nombres deben tener entre 1 y 50 caracteres.";
+    return;
+  }
 
   // La función compartida serializa y almacena ambos valores en localStorage.
   guardarConfiguracion(nombreAplicacion, nombreUsuario);

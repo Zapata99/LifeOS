@@ -1,4 +1,5 @@
 import { leerConfiguracion } from "./configuracion.js";
+import { fechaValida, leerLista, tareaValida, textoValido } from "./validacion.js";
 
 // Atajo para buscar los elementos HTML mediante sus selectores CSS.
 const $ = (selector) => document.querySelector(selector);
@@ -12,7 +13,7 @@ const estadoTareas = $("#estado_tareas");
 const barraProgreso = $("#progreso_tareas");
 const textoProgreso = $("#texto_progreso_tareas");
 // Clave compartida para conservar las tareas en el almacenamiento del navegador.
-const claveAlmacenamiento = "tareas_guardadas";
+const claveTareas = "tareas_guardadas";
 // Valores que se ofrecen en los controles de prioridad.
 const prioridadesPermitidas = ["alta", "media", "baja"];
 
@@ -40,15 +41,12 @@ const formatearFecha = (fecha) =>
 
 // Lee y deserializa las tareas guardadas. Si la clave aún no existe, devuelve una lista vacía.
 const cargarTareas = () => {
-  const tareasGuardadas = localStorage.getItem(claveAlmacenamiento);
-  if (tareasGuardadas === null) return [];
-
-  return JSON.parse(tareasGuardadas);
+  return leerLista(claveTareas, tareaValida);
 };
 
 // Serializa la lista recibida y la persiste en localStorage.
 const guardarTareas = (tareasNuevas) => {
-  localStorage.setItem(claveAlmacenamiento, JSON.stringify(tareasNuevas));
+  localStorage.setItem(claveTareas, JSON.stringify(tareasNuevas));
 };
 
 // Centraliza el guardado y la actualización de estado e interfaz tras una operación.
@@ -149,8 +147,7 @@ const crearElementoTarea = (tarea) => {
   return elemento;
 };
 
-// Representa todas las tareas y calcula el progreso de completado para el elemento progress. 
-// LA BARRA DE PROGRESO ESTA CON IA PORQUE NO ME ACORDE QUE HABIA QUE HACERLO
+// Representa las tareas y sincroniza la barra y el porcentaje de progreso.
 const mostrarTareas = () => {
   listaTareas.replaceChildren(...tareas.map(crearElementoTarea));
   // Cuenta las tareas completadas y calcula el porcentaje que se presenta como texto.
@@ -189,6 +186,13 @@ const editarTarea = (tarea, elementoOriginal) => {
     evento.preventDefault();
 
     // Actualiza solo la fecha y la prioridad de la tarea editada.
+    // Impide guardar una fecha mal formada o una prioridad ajena a las opciones válidas.
+    if (!fechaValida(campoFechaEdicion.value, true) ||
+        !prioridadesPermitidas.includes(campoPrioridadEdicion.value)) {
+      mostrarEstado("La fecha o prioridad no es válida.");
+      return;
+    }
+
     const nuevas = tareas.map((item) =>
       item.identificador === tarea.identificador
         ? { ...item, fecha: campoFechaEdicion.value, prioridad: campoPrioridadEdicion.value }
@@ -218,6 +222,13 @@ formularioTareas.addEventListener("submit", (evento) => {
   // Lee los valores del formulario y elimina espacios exteriores del nombre.
   const nombre = campoNombre.value.trim();
   const fecha = campoFecha.value;
+  // Comprueba los campos antes de crear y persistir la tarea nueva.
+  if (!textoValido(nombre, 3) ||
+      !prioridadesPermitidas.includes(campoPrioridad.value) ||
+      !fechaValida(fecha)) {
+    mostrarEstado("Revisa el nombre, la prioridad y la fecha.");
+    return;
+  }
 
   // La prioridad procede del selector y el identificador distingue esta tarea de las demás.
   const nuevaTarea = {

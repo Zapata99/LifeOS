@@ -1,3 +1,5 @@
+import { fechaValida, gastoValido, leerLista, numeroValido, textoValido } from "./validacion.js";
+
 // Referencias a los valores y mensajes de resumen del presupuesto.
 const totalPresupuesto = document.querySelector("#total_presupuesto");
 const presupuestoRestante = document.querySelector("#presupuesto_restante");
@@ -92,6 +94,11 @@ formularioPresupuesto.addEventListener("submit", (envio) => {
   envio.preventDefault();
   // Convierte a número el texto del campo de importe.
   const cantidad = Number(campoPresupuesto.value);
+  // Rechaza importes fuera de rango y sumas que desborden el valor numérico.
+  if (!numeroValido(cantidad) || !Number.isFinite(presupuesto + cantidad)) {
+    estadoPresupuesto.textContent = "Introduce una cantidad válida.";
+    return;
+  }
 
   presupuesto += cantidad;
 
@@ -112,6 +119,12 @@ formularioGasto.addEventListener("submit", (envio) => {
   const nombre = campoNombreGasto.value.trim();
   const cantidad = Number(campoCantidadGasto.value);
   const fecha = campoFechaGasto.value;
+
+  // Exige un nombre, un importe positivo y una fecha de calendario válida.
+  if (!textoValido(nombre) || !numeroValido(cantidad) || !fechaValida(fecha)) {
+    estadoGasto.textContent = "Revisa el nombre, la cantidad y la fecha.";
+    return;
+  }
 
   // Agrupa los datos y genera un identificador para reconocer este registro.
   const gastoNuevo = {
@@ -145,11 +158,13 @@ function fechaActual() {
 const presupuestoGuardado = localStorage.getItem(clavePresupuesto);
 if (presupuestoGuardado !== null) {
   presupuesto = Number(presupuestoGuardado);
+  if (presupuestoGuardado.trim() === "" || !numeroValido(presupuesto, 0)) {
+    throw new TypeError("El presupuesto guardado no es válido.");
+  }
 }
 
 // Recupera el historial serializado o inicia con una lista vacía si todavía no existe.
-const gastosGuardados = localStorage.getItem(claveGastos);
-gastos = gastosGuardados === null ? [] : JSON.parse(gastosGuardados);
+gastos = leerLista(claveGastos, gastoValido);
 
 // Inicializa el campo de fecha y muestra el historial y los cálculos iniciales.
 campoFechaGasto.value = fechaActual();

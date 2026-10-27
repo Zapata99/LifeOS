@@ -1,4 +1,5 @@
 import { leerConfiguracion } from "./configuracion.js";
+import { eventoValido, gastoValido, leerLista, tareaValida } from "./validacion.js";
 
 // Elementos de la página de inicio donde se muestran la identidad y los resúmenes.
 const nombreUsuario = document.querySelector("#nombre_usuario");
@@ -14,8 +15,7 @@ const claveGastos = "gastos_guardados";
 // Lee las tareas guardadas y crea un elemento de resumen por cada una.
 function mostrarResumenTareas() {
   // Si nunca se guardaron tareas, utiliza una lista vacía; si existen, las deserializa.
-  const tareasGuardadas = localStorage.getItem(claveTareas);
-  const tareas = tareasGuardadas === null ? [] : JSON.parse(tareasGuardadas);
+  const tareas = leerLista(claveTareas, tareaValida);
 
   // Informa explícitamente de que todavía no hay elementos que resumir.
   if (tareas.length === 0) {
@@ -55,8 +55,7 @@ function mostrarResumenTareas() {
 // Lee los eventos guardados y los presenta en el resumen de la página de inicio.
 function mostrarResumenEventos() {
   // La misma clave utilizada por el calendario permite compartir los eventos entre páginas.
-  const guardados = localStorage.getItem(claveEventos);
-  const eventos = guardados === null ? [] : JSON.parse(guardados);
+  const eventos = leerLista(claveEventos, eventoValido);
 
   // Muestra un mensaje cuando el almacenamiento todavía no contiene eventos.
   if (eventos.length === 0) {
@@ -88,8 +87,7 @@ function mostrarResumenEventos() {
 // Lee los gastos guardados y muestra sus importes y fechas dentro del resumen.
 function mostrarResumenGastos() {
   // Recupera la lista compartida con la página de gestión de gastos.
-  const guardados = localStorage.getItem(claveGastos);
-  const gastos = guardados === null ? [] : JSON.parse(guardados);
+  const gastos = leerLista(claveGastos, gastoValido);
 
   // Mantiene visible el estado vacío cuando aún no se ha registrado ningún gasto.
   if (gastos.length === 0) {
