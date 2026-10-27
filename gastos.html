@@ -1,0 +1,78 @@
+<!-- HTML de Gastos -->
+<!doctype html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Gastos</title>
+    <script type="module" src="./src/gastos.js"></script>
+  </head>
+  <body class="pagina-gastos">
+    <div class="app-container">
+      <!-- Navegación entre las páginas de la aplicación. -->
+      <header>
+        <p class="logo">LifeOS</p>
+        <nav>
+          <ul>
+            <li><a href="./index.html">INICIO</a></li>
+            <li><a href="./tarea.html">TAREAS</a></li>
+            <li><a href="./eventos.html">EVENTOS</a></li>
+            <li><a href="./agenda.html">AGENDA</a></li>
+            <li><a href="./gastos.html" aria-current="page">GASTOS</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <h1>Gastos</h1>
+
+        <!-- Presupuesto actual y formulario para aumentarlo. -->
+        <section class="panel-gastos" aria-labelledby="titulo_presupuesto">
+          <h2 id="titulo_presupuesto">Presupuesto</h2>
+          <p class="total-presupuesto" id="total_presupuesto">0,00 €</p>
+          <p class="restante-presupuesto" id="presupuesto_restante"></p>
+          <button id="mostrar_formulario_presupuesto" type="button" aria-expanded="false" aria-controls="formulario_presupuesto">
+            Añadir presupuesto
+          </button>
+
+          <form id="formulario_presupuesto" class="formulario-gastos" hidden>
+            <div class="campo-gasto">
+              <label for="cantidad_presupuesto">Cantidad que quieres añadir</label>
+              <input id="cantidad_presupuesto" type="number" min="0.01" step="0.01" required>
+            </div>
+            <button type="submit">Guardar presupuesto</button>
+          </form>
+          <p id="estado_presupuesto" class="estado-gastos" role="status" aria-live="polite"></p>
+        </section>
+
+        <!-- Formulario para registrar un gasto. -->
+        <section class="panel-gastos" aria-labelledby="titulo_nuevo_gasto">
+          <h2 id="titulo_nuevo_gasto">Añadir gasto</h2>
+          <form id="formulario_gasto" class="formulario-gastos">
+            <div class="campo-gasto">
+              <label for="nombre_gasto">Nombre del gasto</label>
+              <input id="nombre_gasto" type="text" maxlength="100" required placeholder="Ej.: Compra semanal">
+            </div>
+            <div class="campo-gasto">
+              <label for="cantidad_gasto">Cantidad</label>
+              <input id="cantidad_gasto" type="number" min="0.01" step="0.01" required>
+            </div>
+            <div class="campo-gasto">
+              <label for="fecha_gasto">Fecha</label>
+              <input id="fecha_gasto" type="date" lang="es-ES" required>
+            </div>
+            <button type="submit">Guardar gasto</button>
+          </form>
+          <p id="estado_gasto" class="estado-gastos" role="status" aria-live="polite"></p>
+        </section>
+
+        <!-- Historial de gastos registrados. -->
+        <section aria-labelledby="titulo_historial_gastos">
+          <h2 id="titulo_historial_gastos">Historial de gastos</h2>
+          <ul id="historial_gastos" class="historial-gastos"></ul>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

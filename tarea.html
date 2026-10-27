@@ -1,0 +1,70 @@
+<!-- HTML de Tareas -->
+<!doctype html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Usa los mismos estilos que las demás páginas. -->
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Mis tareas</title>
+    <!-- Gestiona la validación, el guardado y la lista de tareas. -->
+    <script type="module" src="./src/tareas.js"></script>
+  </head>
+  <body class="pagina-tareas">
+    <div class="app-container">
+      <header>
+        <!-- La aplicación carga aquí el nombre guardado. -->
+        <p class="logo">LifeOS</p>
+        <!-- Navegación principal. -->
+        <nav>
+          <ul>
+            <li><a href="./index.html">INICIO</a></li>
+            <li><a href="./tarea.html">TAREAS</a></li>
+            <li><a href="./eventos.html">EVENTOS</a></li>
+            <li><a href="./agenda.html">AGENDA</a></li>
+            <li><a href="./gastos.html">GASTOS</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <h1>Mis tareas</h1>
+        <!-- Formulario para crear una tarea. -->
+        <form id="formulario_tareas" class="formulario_tareas">
+          <div class="campo-formulario">
+            <label for="nombre_tarea">Nombre de la tarea</label>
+            <input id="nombre_tarea" name="nombre_tarea" type="text" minlength="3" maxlength="100" required aria-describedby="estado_tareas" placeholder="Ej.: Preparar la presentación">
+          </div>
+          <div class="campo-formulario">
+            <label for="prioridad_tarea">Prioridad</label>
+            <select id="prioridad_tarea" name="prioridad_tarea">
+              <option value="" disabled selected>Elige una prioridad</option>
+              <option value="alta">Alta</option>
+              <option value="media">Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </div>
+          <div class="campo-formulario">
+            <label for="fecha_tarea">Fecha</label>
+            <input id="fecha_tarea" name="fecha_tarea" type="date" lang="es-ES" required>
+          </div>
+          <button type="submit">Guardar tarea</button>
+        </form>
+
+        <!-- Mensajes de validación y confirmación. -->
+        <p id="estado_tareas" class="estado_tareas" role="status" aria-live="polite"></p>
+        <section class="progreso-tareas" aria-labelledby="titulo_progreso_tareas">
+          <h2 id="titulo_progreso_tareas">Progreso de tareas</h2>
+          <label for="progreso_tareas">Tareas completadas</label>
+          <progress id="progreso_tareas" value="0" max="1">0%</progress>
+          <p id="texto_progreso_tareas" aria-live="polite">0 de 0 tareas completadas (0%).</p>
+        </section>
+        <!-- La lista se rellena con las tareas guardadas en el navegador. -->
+        <section aria-labelledby="titulo_tareas_guardadas">
+          <h2 id="titulo_tareas_guardadas">Tareas guardadas</h2>
+          <ul id="lista_tareas" class="lista_tareas"></ul>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

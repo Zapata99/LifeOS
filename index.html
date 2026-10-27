@@ -1,0 +1,61 @@
+<!-- HTML de Inicio -->
+<!doctype html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Estilos y JavaScript de Inicio. -->
+    <link rel="stylesheet" href="./src/style.css">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio</title>
+    <script type="module" src="./src/inicio.js"></script>
+  </head>
+  <body class="pagina-inicio">
+    <div class="app-container">
+      <!-- Navegación principal. -->
+      <header>
+        <p class="logo">LifeOS</p>
+        <nav>
+          <ul>
+            <li><a href="./index.html">INICIO</a></li>
+            <li><a href="./tarea.html">TAREAS</a></li>
+            <li><a href="./eventos.html">EVENTOS</a></li>
+            <li><a href="./agenda.html">AGENDA</a></li>
+            <li><a href="./gastos.html">GASTOS</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <section class="panel-inicio">
+          <!-- El nombre y los resúmenes se cargan desde JavaScript. -->
+          <h1 id="nombre_usuario" class="nombre-usuario">Nombre</h1>
+          <ul class="tarjetas-inicio">
+            <li class="tarjeta-tarea">
+              <div class="titulo-tarjeta-tarea">
+                <a class="boton-anadir-tarea" href="./tarea.html">+</a>
+                <h2>Tarea</h2>
+              </div>
+              <ul id="resumen_tareas" class="resumen-tareas"></ul>
+            </li>
+            <li class="tarjeta-gastos">
+              <div class="titulo-tarjeta-gastos">
+                <a class="boton-anadir-gasto" href="./gastos.html">+</a>
+                <h2>Gastos</h2>
+              </div>
+              <ul id="resumen_gastos" class="resumen-gastos"></ul>
+            </li>
+            <li class="tarjeta-eventos">
+              <div class="titulo-tarjeta-eventos">
+                <a class="boton-anadir-evento" href="./eventos.html">+</a>
+                <h2>Eventos</h2>
+              </div>
+              <ul id="resumen_eventos" class="resumen-eventos"></ul>
+            </li>
+            <li><a href="./agenda.html">Agenda</a></li>
+          </ul>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>

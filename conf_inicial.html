@@ -1,0 +1,37 @@
+<!-- HTML de Configuración inicial -->
+<!doctype html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Estilos comunes de la aplicación. -->
+    <link rel="stylesheet" href="./src/style.css">
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Configuración inicial</title>
+    <!-- Controla la validación, el guardado y el acceso al inicio. -->
+    <script type="module" src="./src/configuracion_inicial.js"></script>
+  </head>
+  <body class="pagina-configuracion">
+    <main class="panel-configuracion">
+      <section class="tarjeta-configuracion">
+        <h1>Configuración inicial</h1>
+        
+
+        <!-- Al guardar el formulario, se abre la página de inicio. -->
+        <form id="formulario_configuracion" action="./index.html">
+          <div class="campo-configuracion">
+            <label for="nombre_aplicacion">Nombre de la aplicación</label>
+            <input type="text" id="nombre_aplicacion" name="nombre_aplicacion" maxlength="50" required>
+          </div>
+          <div class="campo-configuracion">
+            <label for="nombre_usuario">Tu nombre</label>
+            <input type="text" id="nombre_usuario" name="nombre_usuario" maxlength="50" required>
+          </div>
+          <p id="estado_configuracion" role="status" aria-live="polite"></p>
+          <button type="submit">Guardar y entrar</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>

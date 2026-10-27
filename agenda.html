@@ -1,0 +1,87 @@
+<!-- HTML de Agenda -->
+<!doctype html>
+<html lang="es-ES">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/style.css">
+    <title>Agenda</title>
+    <script type="module" src="./src/eventos.js"></script>
+  </head>
+  <body class="pagina-eventos">
+    <div class="app-container">
+      <!-- Navegación entre las páginas de la aplicación. -->
+      <header>
+        <p class="logo">LifeOS</p>
+        <nav>
+          <ul>
+            <li><a href="./index.html">INICIO</a></li>
+            <li><a href="./tarea.html">TAREAS</a></li>
+            <li><a href="./eventos.html">EVENTOS</a></li>
+            <li><a href="./agenda.html" aria-current="page">AGENDA</a></li>
+            <li><a href="./gastos.html">GASTOS</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      <main>
+        <h1>Agenda</h1>
+        <section class="panel-eventos">
+          <!-- Leyenda y botón para añadir eventos a la agenda. -->
+          <div class="barra-calendario">
+            <div class="leyenda-calendario">
+              <span><i class="marca-evento"></i> Eventos</span>
+              <span><i class="marca-tarea"></i> Tareas</span>
+            </div>
+            <button
+              id="mostrar_formulario_evento"
+              class="boton-crear-evento"
+              type="button"
+              aria-expanded="false"
+              aria-controls="formulario_evento"
+            >
+              <span aria-hidden="true">+</span> Crear evento
+            </button>
+          </div>
+
+          <!-- Formulario para guardar un evento en el calendario. -->
+          <form id="formulario_evento" class="formulario-evento">
+            <div class="campo-evento">
+              <label for="nombre_evento">Nombre del evento</label>
+              <input id="nombre_evento" name="nombre_evento" type="text" maxlength="100" required>
+            </div>
+            <div class="campo-evento">
+              <label for="fecha_evento">Fecha</label>
+              <input id="fecha_evento" name="fecha_evento" type="date" lang="es-ES" required>
+            </div>
+            <button type="submit">Guardar evento</button>
+            <p id="estado_eventos" role="status" aria-live="polite"></p>
+          </form>
+
+          <!-- El calendario muestra los eventos y las tareas guardados. -->
+          <section class="calendario">
+            <div class="cabecera-calendario">
+              <button id="mes_anterior" type="button">&lt;</button>
+              <h2 id="mes_actual" aria-live="polite"></h2>
+              <button id="mes_siguiente" type="button">&gt;</button>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Lun</th>
+                  <th scope="col">Mar</th>
+                  <th scope="col">Mié</th>
+                  <th scope="col">Jue</th>
+                  <th scope="col">Vie</th>
+                  <th scope="col">Sáb</th>
+                  <th scope="col">Dom</th>
+                </tr>
+              </thead>
+              <tbody id="dias_calendario"></tbody>
+            </table>
+          </section>
+        </section>
+      </main>
+    </div>
+  </body>
+</html>
